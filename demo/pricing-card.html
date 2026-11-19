@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>同一个定价卡：没有参照 vs 参照先行</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f6f5f2;
+    font-family: "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #1f2328;
+    padding: 52px 56px 56px;
+  }
+  .stage { display: flex; gap: 60px; justify-content: center; align-items: stretch; }
+  .col { width: 336px; display: flex; flex-direction: column; }
+  .col-label {
+    font-size: 12px; color: #8a8f98; letter-spacing: .06em;
+    margin-bottom: 14px; padding-left: 2px;
+  }
+  .col-label b { color: #57606a; font-weight: 600; }
+
+  /* ============ 左：没有参照（AI 平均值） ============ */
+  .before-card {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+    padding: 24px; text-align: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,.14);
+    font-family: Arial, "Microsoft YaHei", sans-serif;
+    flex: 1; display: flex; flex-direction: column;
+  }
+  .badge {
+    display: inline-block; align-self: center;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    color: #fff; font-size: 11px; padding: 3px 12px; border-radius: 999px;
+    margin-bottom: 12px;
+  }
+  .before-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .before-card .desc { font-size: 12px; color: #6b7280; margin-bottom: 16px; line-height: 1.5; }
+  .price { font-size: 32px; font-weight: 700; color: #111; }
+  .price small { font-size: 12px; color: #9ca3af; font-weight: 400; }
+  .before-card ul { list-style: none; margin: 16px 0 18px; }
+  .before-card li { font-size: 13px; color: #374151; margin: 7px 0; }
+  .btns { margin-top: auto; display: flex; gap: 8px; }
+  .btn-primary {
+    flex: 1; background: #3b82f6; color: #fff; border: none;
+    border-radius: 8px; padding: 9px 0; font-size: 13px; cursor: pointer;
+  }
+  .btn-ghost {
+    flex: 1; background: #fff; color: #3b82f6; border: 1px solid #3b82f6;
+    border-radius: 8px; padding: 9px 0; font-size: 13px; cursor: pointer;
+  }
+
+  /* ============ 右：参照先行（本 skill 流程） ============ */
+  .after-card {
+    background: #fff; border-radius: 16px; padding: 28px 28px 24px;
+    box-shadow: 0 1px 2px rgba(31,35,40,.05), 0 12px 32px rgba(31,35,40,.09);
+    flex: 1; display: flex; flex-direction: column;
+  }
+  .flag {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; font-weight: 600; color: #0e7c66; margin-bottom: 18px;
+  }
+  .flag::after { content: ""; flex: 1; height: 1px; background: #eceae6; }
+  .after-card h3 { font-size: 20px; font-weight: 600; letter-spacing: -.01em; }
+  .sub { font-size: 13px; color: #6e7378; line-height: 1.6; margin-top: 6px; }
+  .price-row { display: flex; align-items: baseline; gap: 7px; margin: 22px 0 4px; }
+  .price-num {
+    font-size: 30px; font-weight: 600; letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .price-unit { font-size: 13px; color: #8a8f98; }
+  .price-note { font-size: 12px; color: #a09a91; }
+  .after-card ul { list-style: none; margin: 20px 0 24px; display: grid; gap: 11px; }
+  .after-card li {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 13.5px; color: #3a3f45; line-height: 1.5;
+  }
+  .after-card li svg { flex: none; margin-top: 3px; color: #0e7c66; }
+  .cta {
+    margin-top: auto; width: 100%; height: 42px;
+    background: #1f2328; color: #fff; border: none; border-radius: 10px;
+    font-size: 14px; font-weight: 500; cursor: pointer;
+    font-family: inherit;
+  }
+  .foot { margin-top: 12px; font-size: 12px; color: #a09a91; text-align: center; }
+</style>
+</head>
+<body>
+  <div class="stage">
+
+    <div class="col">
+      <div class="col-label"><b>没有参照</b> —— 模型的平均值</div>
+      <div class="before-card">
+        <span class="badge">最受欢迎</span>
+        <h3>专业版</h3>
+        <p class="desc">无缝提升你的工作流，一键解锁全部强大功能！</p>
+        <div class="price">¥99.99 <small>/月</small></div>
+        <ul>
+          <li>✓ 无限项目</li>
+          <li>✓ 优先支持</li>
+          <li>✓ 高级数据分析</li>
+        </ul>
+        <div class="btns">
+          <button class="btn-primary">立即购买</button>
+          <button class="btn-ghost">了解更多</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="col-label"><b>参照先行</b> —— 本 skill 流程</div>
+      <div class="after-card">
+        <div class="flag">推荐</div>
+        <h3>专业版</h3>
+        <p class="sub">适合独立开发者与小型团队的完整功能。</p>
+        <div class="price-row">
+          <span class="price-num">¥68</span>
+          <span class="price-unit">每月</span>
+        </div>
+        <div class="price-note">按年付 ¥588，省 28%</div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>每月 200 次导出</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>3 个协作席位</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>邮件支持，24 小时内回复</li>
+        </ul>
+        <button class="cta">选购专业版</button>
+        <div class="foot">支持支付宝与微信支付 · 7 天无理由退款</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
