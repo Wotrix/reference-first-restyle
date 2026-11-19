@@ -1,6 +1,6 @@
 ---
 name: reference-first-restyle
-description: Restyles or extends UI with the reference-first workflow — find a concrete reference, distill it into executable specs, propose 2-3 candidate directions, then implement under three constraints (data/structure untouched, no new deps, complete files). Use for 改观感 / 重做样式 / 照着参考图做 / 美化现有页面 requests.
+description: Restyles or extends UI with the reference-first workflow — find a concrete reference, quality-check it, distill it into executable specs, propose 2-3 candidate directions, then implement under three constraints (data/structure untouched, no new deps, complete files). Use for 改观感 / 重做样式 / 照着参考图做 / 美化现有页面 requests.
 ---
 
 # Reference-First Restyle — 先参照，后代码
@@ -14,17 +14,21 @@ description: Restyles or extends UI with the reference-first workflow — find a
 - **新增一个区块/面板** → 第 1-3 步照走，第 4 步按新组件写。
 - **修具体 bug / 微调** → 不用本流程，直接改。
 
-## 第 1 步：找参照（0 参照不许动手）
+## 第 1 步：找参照（0 参照不动手）
 
 按优先级取用：
 
 1. **用户给的截图或链接** — 最高优先级，一切以它为准。用户发图先直接读，失败再要文字要点。
-2. **网络参照**：
-   - 组件库/图库页面 URL 加 `.md` 后缀（或请求头 `Accept: text/markdown`）常能拿到结构化 Markdown，AI 直接可读——比截图便宜，优先用。
-   - 要的是「它长什么样、按什么规矩排」的**描述**，不是它的代码。
-3. **项目自身既有模式** — 本项目过去的批次就是参照库。同类组件先对齐现有一致性，再谈新方向。
+2. **网络参照（组件超市/图库）**：
+   - 按「要做的东西」找分类，不按组件名瞎逛：做定价进 Pricing、做后台进 Dashboard UI、做登录进 Auth——分类是按页面用途分的。
+   - 页面 URL 加 `.md` 后缀（或请求头 `Accept: text/markdown`）常能拿到结构化 Markdown，AI 直接可读——比截图便宜，优先用。
+   - **参照也要质检，三条不过就换**：① 把窗口拖窄——大部分布局问题只在手机宽度暴露，桌面漂亮不算过关；② 看带不带交互——带悬停/切换/进场动效的依赖更多；③ 看依赖什么——纯样式 < 动画库 < 一整套自研工具函数，依赖越少越好搬。
+   - 若接了 21st.dev 类 MCP：先用免费的 search / get_inspiration 收窄候选，人确认后才 get_component，一次只取一个；generate 只在明确要全新东西时用。**AI 收窄、人拍板。**
+3. **项目自身既有模式** — 项目过去的实现就是参照库。同类组件先对齐现有一致性，再谈新方向。
 
 至少 1 个参照，最好 2-3 个不同方向。用户没给就主动找；实在找不到，明说「我先按 X 方向出一版候选」再动手。
+
+**只取设计，不取代码。** 老页面有数据、有历史、有技术栈，粘别人的代码等于把接口逻辑重写一遍；要的是「它长什么样、按什么规矩排」的描述，回来按项目自己的写法重做。
 
 ## 第 2 步：蒸馏成规格，不是形容词
 
@@ -47,8 +51,6 @@ description: Restyles or extends UI with the reference-first workflow — find a
 1. **数据与结构不动**：props 名称、数据字段、组件层级一律保持，只改布局/间距/字号/颜色/圆角/阴影/动效。
 2. **不引新依赖**：需要动画就用项目已有能力降级实现。
 3. **出完整单文件**：不给 diff，用户按整体验收。
-
-外部参照只取设计、不取代码——按本项目的技术栈、CSS 变量体系和数据结构重写。
 
 ## 第 5 步：验收
 

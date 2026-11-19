@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>同一个定价区：没有参照 vs 参照先行</title>
+<style>
+  /* Inter Variable（OFL 许可）仅用于拉丁字符与数字，中文回退系统字体 */
+  @font-face {
+    font-family: "Inter";
+    src: url("fonts/Inter-Variable.woff2") format("woff2");
+    font-weight: 100 900;
+    font-display: swap;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f5f4f1;
+    font-family: "Inter", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    color: #1f2328;
+    padding: 44px 0 48px;
+  }
+  .page { width: 852px; margin: 0 auto; }
+  .block + .block { margin-top: 36px; }
+  .block-label {
+    font-size: 12px; color: #8a8f98; letter-spacing: .06em;
+    margin-bottom: 12px; padding-left: 2px;
+  }
+  .block-label b { color: #57606a; font-weight: 600; }
+
+  /* ============ 上：没有参照（AI 平均值） ============ */
+  .b-head { text-align: center; margin-bottom: 26px; }
+  .b-head h2 {
+    font-size: 22px; font-weight: 700; margin-bottom: 8px;
+    background: linear-gradient(90deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .b-head p { font-size: 12.5px; color: #6b7280; }
+  .b-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; align-items: center; }
+  .b-card {
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 8px;
+    padding: 22px 18px; text-align: center;
+    box-shadow: 0 4px 14px rgba(0,0,0,.15);
+    font-family: Arial, "Microsoft YaHei", sans-serif;
+  }
+  .b-card.hot { transform: scale(1.06); position: relative; z-index: 1; }
+  .badge {
+    display: inline-block; background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    color: #fff; font-size: 11px; padding: 3px 12px; border-radius: 999px; margin-bottom: 10px;
+  }
+  .b-card h3 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  .b-price { font-size: 28px; font-weight: 700; color: #111; }
+  .b-price small { font-size: 12px; color: #9ca3af; font-weight: 400; }
+  .b-card ul { list-style: none; margin: 14px 0 16px; }
+  .b-card li { font-size: 12.5px; color: #374151; margin: 7px 0; }
+  .b-btn {
+    display: block; width: 100%; padding: 8px 0; font-size: 12.5px;
+    border-radius: 8px; cursor: pointer; font-family: inherit;
+  }
+  .b-btn.solid { background: #3b82f6; color: #fff; border: none; }
+  .b-btn.ghost { background: #fff; color: #3b82f6; border: 1px solid #3b82f6; }
+
+  /* ============ 下：参照先行（本 skill 流程） ============ */
+  .a-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 22px; }
+  .a-head h2 { font-size: 22px; font-weight: 600; letter-spacing: -.02em; }
+  .a-head .sub { font-size: 13px; color: #6e7378; margin-top: 6px; }
+  .seg {
+    display: flex; align-items: center; background: #eae9e5; border-radius: 999px; padding: 3px;
+  }
+  .seg span { font-size: 12.5px; padding: 5px 13px; border-radius: 999px; color: #6e7378; }
+  .seg .on { background: #fff; color: #1f2328; font-weight: 500; box-shadow: 0 1px 3px rgba(31,35,40,.12); }
+  .a-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: stretch; }
+  .a-card {
+    background: #fff; border-radius: 16px; padding: 22px 22px 20px;
+    box-shadow: 0 1px 2px rgba(31,35,40,.04), 0 10px 28px rgba(31,35,40,.07);
+    display: flex; flex-direction: column;
+  }
+  .a-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .a-name { font-size: 13px; font-weight: 500; color: #57606a; }
+  .a-tag { font-size: 12px; font-weight: 600; color: #0e7c66; }
+  .a-price-row { display: flex; align-items: baseline; gap: 7px; }
+  .a-price { font-size: 32px; font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+  .a-unit { font-size: 13px; color: #8a8f98; }
+  .a-note { font-size: 12px; color: #a09a91; margin-top: 5px; min-height: 18px; }
+  .a-card ul { list-style: none; margin: 18px 0 20px; display: grid; gap: 10px; }
+  .a-card li { display: flex; gap: 9px; align-items: flex-start; font-size: 13px; color: #3a3f45; line-height: 1.5; }
+  .a-card li svg { flex: none; margin-top: 3px; color: #0e7c66; }
+  .a-cta {
+    margin-top: auto; width: 100%; height: 38px; border: none; border-radius: 10px;
+    font-size: 13px; font-weight: 500; cursor: pointer; font-family: inherit;
+    background: #f0efec; color: #1f2328;
+  }
+  .a-cta.hot { background: #1f2328; color: #fff; }
+  .a-card.featured {
+    background: #16191f;
+    box-shadow: 0 2px 4px rgba(22,25,31,.2), 0 16px 40px rgba(22,25,31,.28);
+  }
+  .a-card.featured .a-name { color: rgba(255,255,255,.92); }
+  .a-card.featured .a-price { color: #fff; }
+  .a-card.featured .a-unit { color: rgba(255,255,255,.6); }
+  .a-card.featured .a-note { color: rgba(255,255,255,.5); }
+  .a-card.featured li { color: rgba(255,255,255,.85); }
+  .a-card.featured li svg { color: #34d399; }
+  .a-card.featured .a-cta { background: #fff; color: #16191f; }
+  .a-foot { margin-top: 16px; font-size: 12px; color: #a09a91; text-align: center; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="block">
+    <div class="block-label"><b>没有参照</b> —— 模型的平均值</div>
+    <div class="b-head">
+      <h2>选择适合您的方案</h2>
+      <p>无缝提升你的工作流，灵活应对每一次增长！</p>
+    </div>
+    <div class="b-grid">
+      <div class="b-card">
+        <h3>基础版</h3>
+        <div class="b-price">¥49.00 <small>/月</small></div>
+        <ul>
+          <li>✓ 无限项目</li>
+          <li>✓ 优先支持</li>
+          <li>✓ 高级数据分析</li>
+        </ul>
+        <button class="b-btn ghost">了解更多</button>
+      </div>
+      <div class="b-card hot">
+        <span class="badge">最受欢迎</span>
+        <h3>专业版</h3>
+        <div class="b-price">¥99.00 <small>/月</small></div>
+        <ul>
+          <li>✓ 无限项目</li>
+          <li>✓ 优先支持</li>
+          <li>✓ 高级数据分析</li>
+          <li>✓ 自定义域名</li>
+          <li>✓ API 接入</li>
+        </ul>
+        <button class="b-btn solid">立即购买</button>
+      </div>
+      <div class="b-card">
+        <h3>企业版</h3>
+        <div class="b-price">¥299.00 <small>/月</small></div>
+        <ul>
+          <li>✓ 无限项目</li>
+          <li>✓ 优先支持</li>
+          <li>✓ 高级数据分析</li>
+        </ul>
+        <button class="b-btn ghost">联系我们</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-label"><b>参照先行</b> —— 本 skill 流程</div>
+    <div class="a-head">
+      <div>
+        <h2>简单透明的定价</h2>
+        <p class="sub">按团队规模选择，随时升级或降级。</p>
+      </div>
+      <div class="seg"><span>月付</span><span class="on">年付 · 省 20%</span></div>
+    </div>
+    <div class="a-grid">
+      <div class="a-card">
+        <div class="a-top"><span class="a-name">免费版</span></div>
+        <div class="a-price-row"><span class="a-price">¥0</span><span class="a-unit">永久免费</span></div>
+        <div class="a-note">个人使用，1 个项目</div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>基础组件</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>社区支持</li>
+        </ul>
+        <button class="a-cta">免费开始</button>
+      </div>
+      <div class="a-card featured">
+        <div class="a-top"><span class="a-name">专业版</span><span class="a-tag">推荐</span></div>
+        <div class="a-price-row"><span class="a-price">¥68</span><span class="a-unit">每月</span></div>
+        <div class="a-note">按年付 ¥588，省 28%</div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>每月 200 次导出</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>3 个协作席位</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>邮件支持，24 小时内回复</li>
+        </ul>
+        <button class="a-cta hot">选购专业版</button>
+      </div>
+      <div class="a-card">
+        <div class="a-top"><span class="a-name">企业版</span></div>
+        <div class="a-price-row"><span class="a-price">¥198</span><span class="a-unit">每月</span></div>
+        <div class="a-note">按年付 ¥1,980，省 17%</div>
+        <ul>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>不限导出与席位</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>SSO 与审计日志</li>
+          <li><svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.2 3.2L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>专属客户成功经理</li>
+        </ul>
+        <button class="a-cta">联系销售</button>
+      </div>
+    </div>
+    <div class="a-foot">所有价格含税 · 支持支付宝与微信支付 · 7 天无理由退款</div>
+  </div>
+
+</div>
+</body>
+</html>
